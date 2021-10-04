@@ -8,4 +8,4 @@ router.get("/:message", (req, res) => {
   res.status(200).send(req.params.message);
 });
 
-export default router;
+module.exports = router;
