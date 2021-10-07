@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import RegisterForm from "../components/RegisterForm";
-import axios from "../components/axios";
+import { register } from "../actions/auth";
 import { toast } from "react-toastify";
 
 const Register = ({ history }) => {
@@ -13,7 +13,7 @@ const Register = ({ history }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/register", { name, email, password });
+      await register({ name, email, password });
       toast.success("User is Successfully Registered");
       history.push("/login");
     } catch (err) {
