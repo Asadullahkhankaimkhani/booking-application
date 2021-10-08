@@ -55,7 +55,6 @@ export const login = async (req, res) => {
       });
     });
   } catch (err) {
-    console.log("ERR", err);
     res.status(400).send("Login Failed Try Again");
   }
 };

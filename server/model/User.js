@@ -56,11 +56,9 @@ userSchema.methods.camparePassowrd = function (password, next) {
   let user = this;
   bcrypt.compare(password, user.password, function (err, match) {
     if (err) {
-      console.log(err);
       return next(err, false);
     }
     // null if password match
-    console.log(match);
     return next(null, match);
   });
 };
