@@ -24,3 +24,22 @@ export const register = async (req, res) => {
     res.status(400).send("Error Try Again");
   }
 };
+
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  // Check that user with that email is exist or not
+  try {
+    let user = await User.findOne({ email }).exec();
+
+    if (!user)
+      res.status(400).send("No User Found on This Email Please Sign Up");
+
+    user.camparePassowrd(password, (err, match) => {
+      if (!match || err) return res.status(400).send("Wrong Password");
+    });
+  } catch (err) {
+    console.log("ERR", err);
+    res.status(400).send("Login Failed Try Again");
+  }
+};
