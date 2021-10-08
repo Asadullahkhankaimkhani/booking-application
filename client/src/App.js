@@ -8,9 +8,11 @@ import "react-toastify/dist/ReactToastify.css";
 import Home from "./booking/Home";
 import Register from "./auth/Register";
 import Login from "./auth/Login";
+import Dashboard from "./user/Dashboard";
 
 // Components
 import TopNav from "./components/TopNav";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -22,6 +24,7 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
+          <PrivateRoute exact path="/dashboard" component={Dashboard} />
         </Switch>
       </BrowserRouter>
     </>
