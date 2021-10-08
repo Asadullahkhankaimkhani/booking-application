@@ -22,11 +22,16 @@ const userSchema = new Schema(
       min: 6,
       max: 64,
     },
+    stripe_account_id: "",
+    stripe_seller: {},
+    stripeSession: {},
   },
   {
     timestamps: true,
   }
 );
+
+// For Hashing Password in Database
 
 userSchema.pre("save", function (next) {
   let user = this;
@@ -44,5 +49,20 @@ userSchema.pre("save", function (next) {
     return next();
   }
 });
+
+// Compare Password for login
+
+userSchema.method.camparePassowrd = function (password, next) {
+  let user = this;
+  bcrypt.compare(password, user.password, function (err, match) {
+    if (err) {
+      console.log(err);
+      return next(err, false);
+    }
+    // null if password match
+    console.log(match);
+    return next(null, match);
+  });
+};
 
 export default mongoose.model("User", userSchema);
