@@ -52,7 +52,7 @@ userSchema.pre("save", function (next) {
 
 // Compare Password for login
 
-userSchema.method.camparePassowrd = function (password, next) {
+userSchema.methods.camparePassowrd = function (password, next) {
   let user = this;
   bcrypt.compare(password, user.password, function (err, match) {
     if (err) {

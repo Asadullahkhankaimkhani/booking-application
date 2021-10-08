@@ -1,5 +1,6 @@
 /** @format */
 import User from "../model/User";
+import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -37,6 +38,21 @@ export const login = async (req, res) => {
 
     user.camparePassowrd(password, (err, match) => {
       if (!match || err) return res.status(400).send("Wrong Password");
+
+      let token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "7d",
+      });
+
+      res.json({
+        token,
+        user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+        },
+      });
     });
   } catch (err) {
     console.log("ERR", err);
