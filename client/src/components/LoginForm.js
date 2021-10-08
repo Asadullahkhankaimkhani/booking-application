@@ -1,9 +1,7 @@
 import React from "react";
 
-const RegisterForm = ({
+const LoginForm = ({
   handleSubmit,
-  name,
-  setName,
   email,
   setEmail,
   password,
@@ -11,18 +9,6 @@ const RegisterForm = ({
 }) => {
   return (
     <form onSubmit={handleSubmit}>
-      <div className="form-group mb-3">
-        <label htmlFor="name" className="form-label">
-          Name
-        </label>
-        <input
-          type="text"
-          name="name"
-          value={name}
-          className="form-control"
-          onChange={(e) => setName(e.target.value)}
-        />
-      </div>
       <div className="form-group mb-3">
         <label htmlFor="name" className="form-label">
           Email
@@ -47,14 +33,11 @@ const RegisterForm = ({
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
-      <button
-        disabled={!name || !email || !password}
-        className="btn btn-primary mt-2"
-      >
-        Register
+      <button disabled={!email || !password} className="btn btn-primary mt-2">
+        Login
       </button>
     </form>
   );
 };
 
-export default RegisterForm;
+export default LoginForm;

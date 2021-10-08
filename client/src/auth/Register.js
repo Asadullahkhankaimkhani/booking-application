@@ -5,6 +5,7 @@ import RegisterForm from "../components/RegisterForm";
 import { register } from "../actions/auth";
 import { toast } from "react-toastify";
 
+
 const Register = ({ history }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
