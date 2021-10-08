@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import LoginForm from "../components/LoginForm";
+import { login } from "../actions/auth";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -9,7 +11,19 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Data send to backend", { email, password });
+
     //
+    try {
+      const { data } = await login({ email, password });
+      if (data) {
+        // Save token in local storage and redux state
+      }
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+      if (err.response.status === 400) toast.error(err.response.data);
+    }
   };
 
   return (
