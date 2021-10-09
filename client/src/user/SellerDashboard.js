@@ -1,7 +1,7 @@
 import React from "react";
 import DashboardNav from "../components/DashboardNav";
 
-const Dashboard = () => {
+const SellerDashboard = () => {
   return (
     <>
       <div className="container-fluid bg-secondary p-5 text-center">
@@ -12,11 +12,11 @@ const Dashboard = () => {
       </div>
       <div className="container">
         <div className="row">
-          <div className="col-md-6">Show Hotels and Other Stuff</div>
+          <div className="col-md-6">Posting Hotels and Other Stuff</div>
         </div>
       </div>
     </>
   );
 };
 
-export default Dashboard;
+export default SellerDashboard;

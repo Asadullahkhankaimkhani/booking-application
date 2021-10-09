@@ -9,6 +9,7 @@ import Home from "./booking/Home";
 import Register from "./auth/Register";
 import Login from "./auth/Login";
 import Dashboard from "./user/Dashboard";
+import SellerDashboard from "./user/SellerDashboard";
 
 // Components
 import TopNav from "./components/TopNav";
@@ -25,6 +26,11 @@ function App() {
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
           <PrivateRoute exact path="/dashboard" component={Dashboard} />
+          <PrivateRoute
+            exact
+            path="/dashboard/seller"
+            component={SellerDashboard}
+          />
         </Switch>
       </BrowserRouter>
     </>
