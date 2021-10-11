@@ -10,6 +10,7 @@ import Register from "./auth/Register";
 import Login from "./auth/Login";
 import Dashboard from "./user/Dashboard";
 import SellerDashboard from "./user/SellerDashboard";
+import New from "./hotels/New";
 
 // Components
 import TopNav from "./components/TopNav";
@@ -31,6 +32,7 @@ function App() {
             path="/dashboard/seller"
             component={SellerDashboard}
           />
+          <PrivateRoute exact path="/hotels/new" component={New} />
         </Switch>
       </BrowserRouter>
     </>

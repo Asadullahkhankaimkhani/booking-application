@@ -11,9 +11,14 @@ const Dashboard = () => {
       <div className="container-fluid p-4">
         <DashboardNav />
       </div>
-      <div className="container">
+      <div className="container-fluid">
         <div className="row">
-          <div className="col-md-6">Show Hotels and Other Stuff</div>
+          <div className="col-md-10">
+            <h2>Your Bookings</h2>
+          </div>
+          <div className="col-md-2">
+            <button className="btn btn-primary">Browers Hotels</button>
+          </div>
         </div>
       </div>
     </>

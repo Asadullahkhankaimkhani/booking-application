@@ -1,5 +1,6 @@
 import React from "react";
 import DashboardNav from "../components/DashboardNav";
+import { Link } from "react-router-dom";
 
 const SellerDashboard = () => {
   return (
@@ -10,9 +11,16 @@ const SellerDashboard = () => {
       <div className="container-fluid p-4">
         <DashboardNav />
       </div>
-      <div className="container">
+      <div className="container-fluid">
         <div className="row">
-          <div className="col-md-6">Posting Hotels and Other Stuff</div>
+          <div className="col-md-10">
+            <h2>Your Hotels</h2>
+          </div>
+          <div className="col-md-2">
+            <Link to="/hotels/new">
+              <button className="btn btn-primary">+ Add Hotel</button>
+            </Link>
+          </div>
         </div>
       </div>
     </>
