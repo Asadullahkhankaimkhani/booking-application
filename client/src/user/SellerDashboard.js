@@ -1,12 +1,13 @@
 import React from "react";
 import DashboardNav from "../components/DashboardNav";
+import ConnectNav from "../components/ConnectNav";
 import { Link } from "react-router-dom";
 
 const SellerDashboard = () => {
   return (
     <>
       <div className="container-fluid bg-secondary p-5 text-center">
-        <h1>Dashboard</h1>
+        <ConnectNav />
       </div>
       <div className="container-fluid p-4">
         <DashboardNav />
