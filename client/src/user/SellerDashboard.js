@@ -3,6 +3,7 @@ import DashboardNav from "../components/DashboardNav";
 import ConnectNav from "../components/ConnectNav";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { HomeOutlined } from "@ant-design/icons";
 
 const SellerDashboard = () => {
   const { auth } = useSelector((state) => ({ ...state }));
@@ -25,8 +26,21 @@ const SellerDashboard = () => {
   const notConnected = () => (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-md-10">
-          <h2>Connect With Stripe</h2>
+        <div className="col-md-6 offset-md-3 text-center">
+          <div className="p-5 pointer">
+            <HomeOutlined className="h1" />
+            <h4>Setup Payout to post Hotel Room</h4>
+            <p className="lead">
+              Booking partners with stripe to tranfer earnings to your account
+            </p>
+            <button className="btn btn-primary mb-3">Setup Payment</button>
+            <p className="text-muted">
+              <small>
+                You will be redirected to Stripe to complete the onboarding
+                process
+              </small>
+            </p>
+          </div>
         </div>
       </div>
     </div>
