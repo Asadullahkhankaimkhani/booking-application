@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon -r esm server.js",
-    "client":"cd .. && cd client && npm start",
-    "dev" :"concurrently \"nodemon -r esm server.js\" \"npm run client\""
+    "client": "cd .. && cd client && npm start",
+    "dev": "concurrently \"nodemon -r esm server.js\" \"npm run client\""
   },
   "keywords": [],
   "author": "",
