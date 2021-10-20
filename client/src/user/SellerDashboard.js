@@ -16,7 +16,7 @@ const SellerDashboard = () => {
     setLoading(true);
     try {
       const { data } = await createConnectAccount(auth.token);
-      console.log(data);
+      window.location.href = data;
       setLoading(false);
     } catch (err) {
       console.log(err);

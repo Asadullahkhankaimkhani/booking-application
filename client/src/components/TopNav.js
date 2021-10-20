@@ -29,6 +29,10 @@ const TopNav = () => {
       </Link>
       {auth && auth.token ? (
         <>
+          <Link className="nav-link" to="/dashboard">
+            Dashboard
+          </Link>
+
           <a className="nav-link pointer" onClick={logout}>
             Logout
           </a>
