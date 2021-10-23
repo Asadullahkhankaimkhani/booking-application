@@ -31,9 +31,29 @@ export const createConnectAccount = async (req, res) => {
   accountLink = Object.assign(accountLink, {
     "stripe_user[email]": user.email || undefined,
   });
-  console.log(`${accountLink.url}?${queryString.stringify(accountLink)}`);
 
   res.send(`${accountLink.url}?${queryString.stringify(accountLink)}`);
 
   // update payment schedule (optional default is 2 days)
+};
+
+export const getAccountStatus = async (req, res) => {
+  const user = await User.findById(req.user._id).exec();
+  const account = await stripe.accounts.retrieve(user.stripe_account_id);
+
+  if (account.charges_enabled === false) {
+    account.charges_enabled = true;
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(
+    user._id,
+    {
+      stripe_seller: account,
+    },
+    { new: true }
+  )
+    .select(`-password`)
+    .exec();
+
+  res.json(updatedUser);
 };
