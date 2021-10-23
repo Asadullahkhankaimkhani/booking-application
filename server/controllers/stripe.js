@@ -33,22 +33,34 @@ export const createConnectAccount = async (req, res) => {
   });
 
   res.send(`${accountLink.url}?${queryString.stringify(accountLink)}`);
-
-  // update payment schedule (optional default is 2 days)
+};
+// update payment schedule (optional default is 2 days)
+const updateDelayDays = async (accountId) => {
+  const account = await stripe.accounts.update(accountId, {
+    settings: {
+      payouts: {
+        schedule: {
+          delay_days: 7,
+        },
+      },
+    },
+  });
+  return account;
 };
 
 export const getAccountStatus = async (req, res) => {
   const user = await User.findById(req.user._id).exec();
   const account = await stripe.accounts.retrieve(user.stripe_account_id);
+  const updatedAccount = await updateDelayDays(account.id);
 
-  if (account.charges_enabled === false) {
-    account.charges_enabled = true;
+  if (updatedAccount.charges_enabled === false) {
+    updatedAccount.charges_enabled = true;
   }
 
   const updatedUser = await User.findByIdAndUpdate(
     user._id,
     {
-      stripe_seller: account,
+      stripe_seller: updatedAccount,
     },
     { new: true }
   )
