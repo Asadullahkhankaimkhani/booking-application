@@ -2,12 +2,13 @@
 import React from "react";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { getAccountStatus } from "../actions/stripe";
+import { updateUserInLocalStorage } from "../actions/auth";
 
 const StripeCallback = ({ history }) => {
   const { auth } = useSelector((state) => ({ ...state }));
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (auth && auth.token) {
@@ -18,7 +19,13 @@ const StripeCallback = ({ history }) => {
 
   const accountStatus = async () => {
     const { data } = await getAccountStatus(auth.token);
-    console.log("Account DATA", data);
+    updateUserInLocalStorage(data, () => {
+      dispatch({
+        type: "LOGGED_IN_USER",
+        payload: data,
+      });
+      window.location.href = "/dashboard/seller";
+    });
   };
 
   return (

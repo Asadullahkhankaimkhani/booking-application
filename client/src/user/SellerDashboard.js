@@ -79,7 +79,7 @@ const SellerDashboard = () => {
       </div>
       {auth &&
       auth.user &&
-      auth.user.token &&
+      auth.token &&
       auth.user.stripe_seller &&
       auth.user.stripe_seller.charges_enabled
         ? connected()
