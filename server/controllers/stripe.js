@@ -1,6 +1,7 @@
 import User from "../model/User";
 import Stripe from "stripe";
 import queryString from "query-string";
+import e from "express";
 
 const stripe = Stripe(process.env.STRIPE_SECRET);
 
@@ -68,4 +69,18 @@ export const getAccountStatus = async (req, res) => {
     .exec();
 
   res.json(updatedUser);
+};
+
+export const getAccountBalance = async (req, res) => {
+  const user = await User.findById(req.user._id).exec();
+
+  try {
+    const balance = await stripe.balance.retrieve({
+      stripeAccount: user.stripe_account_id,
+    });
+    console.log(balance);
+    res.json(balance);
+  } catch (err) {
+    console.log(err);
+  }
 };
