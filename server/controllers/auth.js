@@ -33,11 +33,14 @@ export const login = async (req, res) => {
   try {
     let user = await User.findOne({ email }).exec();
 
-    if (!user)
-      res.status(400).send("No User Found on This Email Please Sign Up");
+    if (!user) {
+      return res.status(400).send("No User Found on This Email Please Sign Up");
+    }
 
     user.camparePassowrd(password, (err, match) => {
-      if (!match || err) return res.status(400).send("Wrong Password");
+      if (!match || err) {
+        return res.status(400).send("Wrong Password");
+      }
 
       let token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "7d",
