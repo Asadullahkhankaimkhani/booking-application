@@ -1,6 +1,7 @@
 import User from "../model/User";
 import Stripe from "stripe";
 import queryString from "query-string";
+import { login } from "../../client/src/actions/auth";
 
 const stripe = Stripe(process.env.STRIPE_SECRET);
 
@@ -41,6 +42,7 @@ const updateDelayDays = async (accountId) => {
       payouts: {
         schedule: {
           delay_days: 7,
+          interval: "daily",
         },
       },
     },
@@ -53,14 +55,15 @@ export const getAccountStatus = async (req, res) => {
   const account = await stripe.accounts.retrieve(user.stripe_account_id);
   const updatedAccount = await updateDelayDays(account.id);
 
-  if (updatedAccount.charges_enabled === false) {
-    updatedAccount.charges_enabled = true;
-  }
+  // if (updatedAccount.charges_enabled === false || payouts_enabled === false) {
+  //   updatedAccount.charges_enabled = true;
+  //   payouts_enabled = true;
+  // }
 
   const updatedUser = await User.findByIdAndUpdate(
     user._id,
     {
-      stripe_seller: updatedAccount,
+      stripe_seller: updateDelayDays,
     },
     { new: true }
   )
@@ -80,5 +83,20 @@ export const getAccountBalance = async (req, res) => {
     res.json(balance);
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const payoutSetting = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).exec();
+
+    const loginLink = await stripe.accounts.createLoginLink(
+      user.stripe_account_id,
+      { redirect_url: process.env.STRIPE_REDIRECT_LOGIN_LINK }
+    );
+    console.log(loginLink);
+    res.json(loginLink);
+  } catch (err) {
+    console.log("Payout Err", err);
   }
 };

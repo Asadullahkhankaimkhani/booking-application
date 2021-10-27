@@ -35,7 +35,7 @@ const ConnectNav = () => {
 
     try {
       const { data } = await payoutSetting(token);
-      console.log(data);
+      window.location.href = data.url;
       setLoding(false);
     } catch (err) {
       console.log(err);
