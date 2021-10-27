@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Card, Avatar } from "antd";
+import { Card, Avatar, Badge } from "antd";
 import moment from "moment";
-import { getAccountBalance } from "../actions/stripe";
+import { getAccountBalance, currencyFromtter } from "../actions/stripe";
 
 const { Meta } = Card;
+const { Ribbon } = Badge;
 
 const ConnectNav = () => {
   const [balance, setBalance] = useState(0);
   const { auth } = useSelector((state) => ({ ...state }));
   const { user } = auth;
 
-  const { pending } = balance;
-
   useEffect(() => {
-    getAccountBalance(auth.token).then(({ data }) => {
-      setBalance(data);
-      console.log(data);
-    });
+    getAccountBalance(auth.token)
+      .then(({ data }) => {
+        setBalance(data);
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [auth.token]);
 
   return (
@@ -34,12 +37,15 @@ const ConnectNav = () => {
         auth.user.stripe_seller &&
         auth.user.stripe_seller.charges_enabled && (
           <>
-            <div>
-              Pending Balance
-              {pending.map((p) => (
-                <p>{p.amount}</p>
-              ))}
-            </div>
+            <Ribbon text="Avaliable" color="geekblue">
+              <Card className="bg-light pt-1 ">
+                {balance &&
+                  balance.pending &&
+                  balance.pending.map((ba, i) => (
+                    <span key={i}>{currencyFromtter(ba)}</span>
+                  ))}
+              </Card>
+            </Ribbon>
             <div>Payout Setting</div>
           </>
         )}
