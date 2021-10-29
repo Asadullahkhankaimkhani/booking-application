@@ -10,7 +10,7 @@ import Register from "./auth/Register";
 import Login from "./auth/Login";
 import Dashboard from "./user/Dashboard";
 import SellerDashboard from "./user/SellerDashboard";
-import New from "./hotels/New";
+import NewHotel from "./hotels/NewHotel";
 import StripeCallback from "./stripe/StripeCallback";
 
 // Components
@@ -33,7 +33,7 @@ function App() {
             path="/dashboard/seller"
             component={SellerDashboard}
           />
-          <PrivateRoute exact path="/hotels/new" component={New} />
+          <PrivateRoute exact path="/hotels/new" component={NewHotel} />
           <PrivateRoute
             exact
             path="/stripe/callback"

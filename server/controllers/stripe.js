@@ -92,7 +92,7 @@ export const payoutSetting = async (req, res) => {
       user.stripe_account_id,
       { redirect_url: process.env.STRIPE_REDIRECT_LOGIN_LINK }
     );
-    console.log(loginLink);
+
     res.json(loginLink);
   } catch (err) {
     console.log("Payout Err", err);
