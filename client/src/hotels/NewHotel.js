@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { DatePicker, Select } from "antd";
 import moment from "moment";
+import { createHotel } from "../actions/hotel";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const NewHotel = () => {
   const [values, setValues] = useState({
@@ -17,12 +20,35 @@ const NewHotel = () => {
     "https://via.placeholder.com/100x100.png?text=PREVIEW"
   );
 
-  const { title, content, location, price } = values;
+  const { auth } = useSelector((state) => ({ ...state }));
+
+  const { token } = auth;
+
+  const { title, content, image, location, price, from, to, bed } = values;
 
   const { Option } = Select;
 
-  const handleSubmit = (e) => {
-    //
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    let hotelData = new FormData();
+    hotelData.append("title", title);
+    hotelData.append("content", content);
+    hotelData.append("location", location);
+    hotelData.append("price", price);
+    image && hotelData.append("image", image);
+    hotelData.append("from", from);
+    hotelData.append("to", to);
+    hotelData.append("bed", bed);
+
+    console.log(...hotelData);
+
+    const { data } = await createHotel(token, hotelData);
+    console.log("New Hotel", data);
+    toast("New Hotel is posted");
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   };
 
   const handleImageChange = (e) => {
