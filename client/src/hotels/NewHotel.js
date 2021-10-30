@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { DatePicker } from "antd";
+import { DatePicker, Select } from "antd";
 import moment from "moment";
 
 const NewHotel = () => {
@@ -17,7 +17,9 @@ const NewHotel = () => {
     "https://via.placeholder.com/100x100.png?text=PREVIEW"
   );
 
-  const { title, content, location, price, from, to, bed } = values;
+  const { title, content, location, price } = values;
+
+  const { Option } = Select;
 
   const handleSubmit = (e) => {
     //
@@ -77,18 +79,37 @@ const NewHotel = () => {
           className="form-control mb-2"
           placeholder="Price"
         />
-        <input
+        {/* <input
           type="number"
           onChange={handleChange}
           name="bed"
           value={bed}
           className="form-control mb-2"
           placeholder="Number of Bed"
-        />
+        /> */}
+        <Select
+          onChange={(value) => setValues({ ...values, bed: value })}
+          className="w-100 mb-2"
+          size="large"
+          placeholder="Number of beds"
+        >
+          <Option key={1} value={1}>
+            1
+          </Option>
+          <Option key={2} value={2}>
+            2
+          </Option>
+          <Option key={3} value={3}>
+            3
+          </Option>
+          <Option key={4} value={4}>
+            4
+          </Option>
+        </Select>
       </div>
       <DatePicker
         placeholder="From Date"
-        className="form-control m-2"
+        className="form-control mb-2"
         onChange={(date, dateString) =>
           setValues({ ...values, from: dateString })
         }
@@ -98,7 +119,7 @@ const NewHotel = () => {
       />
       <DatePicker
         placeholder="To Date"
-        className="form-control m-2"
+        className="form-control mb-2"
         onChange={(date, dateString) =>
           setValues({ ...values, to: dateString })
         }
