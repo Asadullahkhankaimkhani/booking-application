@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { DatePicker } from "antd";
+import moment from "moment";
 
 const NewHotel = () => {
   const [values, setValues] = useState({
@@ -15,7 +17,7 @@ const NewHotel = () => {
     "https://via.placeholder.com/100x100.png?text=PREVIEW"
   );
 
-  const { title, content, location, image, price, from, to, bed } = values;
+  const { title, content, location, price, from, to, bed } = values;
 
   const handleSubmit = (e) => {
     //
@@ -60,6 +62,14 @@ const NewHotel = () => {
           placeholder="Content"
         />
         <input
+          type="text"
+          onChange={handleChange}
+          name="location"
+          value={location}
+          className="form-control mb-2"
+          placeholder="Location"
+        />
+        <input
           type="number"
           onChange={handleChange}
           name="price"
@@ -76,14 +86,34 @@ const NewHotel = () => {
           placeholder="Number of Bed"
         />
       </div>
+      <DatePicker
+        placeholder="From Date"
+        className="form-control m-2"
+        onChange={(date, dateString) =>
+          setValues({ ...values, from: dateString })
+        }
+        disabledDate={(current) =>
+          current && current.valueOf() < moment().subtract(1, "days")
+        }
+      />
+      <DatePicker
+        placeholder="To Date"
+        className="form-control m-2"
+        onChange={(date, dateString) =>
+          setValues({ ...values, to: dateString })
+        }
+        disabledDate={(current) =>
+          current && current.valueOf() < moment().subtract(1, "days")
+        }
+      />
       <button className="btn btn-outline-primary m-2">Save</button>
     </form>
   );
 
   return (
     <>
-      <div className="container-fluid bg-secondary p-5 text-center">
-        <h2>Add Hotels</h2>
+      <div className="container-fluid bg-secondary p-5 text-center ">
+        <h2 className="white">Add Hotels</h2>
       </div>
       <div className="container">
         <div className="row">
