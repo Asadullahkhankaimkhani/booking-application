@@ -11,6 +11,9 @@ const NewHotel = () => {
     to: "",
     bed: "",
   });
+  const [preview, setPreview] = useState(
+    "https://via.placeholder.com/100x100.png?text=PREVIEW"
+  );
 
   const { title, content, location, image, price, from, to, bed } = values;
 
@@ -18,9 +21,14 @@ const NewHotel = () => {
     //
   };
 
-  const handleImageChange = () => {};
+  const handleImageChange = (e) => {
+    setPreview(URL.createObjectURL(e.target.files[0]));
+    setValues({ ...values, image: e.target.files[0] });
+  };
 
-  const handleChange = () => {};
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
 
   const showForm = () => (
     <form onSubmit={handleSubmit}>
@@ -84,7 +92,11 @@ const NewHotel = () => {
             {showForm()}
           </div>
           <div className="col-md-2">
-            Image
+            <img
+              src={preview}
+              alt="preview_image"
+              className="img img-fluid m-2"
+            />
             <pre>{JSON.stringify(values, null, 4)}</pre>
           </div>
         </div>
