@@ -31,6 +31,7 @@ const NewHotel = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Sending Form Data
     let hotelData = new FormData();
     hotelData.append("title", title);
     hotelData.append("content", content);
