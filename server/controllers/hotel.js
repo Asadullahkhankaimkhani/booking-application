@@ -2,9 +2,6 @@ import Hotel from "../model/hotel";
 import fs from "fs";
 
 export const create = async (req, res) => {
-  // console.log("Fields", req.fields);
-  // console.log(req.files);
-
   try {
     let fields = req.fields;
     let files = req.files;
@@ -14,12 +11,23 @@ export const create = async (req, res) => {
       hotel.image.data = fs.readFileSync(files.image.path);
       hotel.image.contentType = files.image.type;
     }
-
-    const result = await hotel.save();
-
-    res.json(result);
+    try {
+      const result = await hotel.save();
+      res.json(result);
+    } catch (err) {
+      res.status(400).send("Error Saving");
+    }
   } catch (err) {
-    console.log(err);
     res.status(400).json({ err: err.message });
   }
+};
+
+export const hotels = async (req, res) => {
+  const all = await Hotel.find({})
+    .limit(24)
+    .select("-image.data")
+    .populate("postedBy", "_id name")
+    .exec();
+
+  res.json(all);
 };
