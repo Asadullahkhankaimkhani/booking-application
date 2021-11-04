@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { DatePicker, Select } from "antd";
-import moment from "moment";
 import { createHotel } from "../actions/hotel";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import HotelCreateForm from "../components/Forms/HotelCreateForm";
 
 const NewHotel = () => {
   const [values, setValues] = useState({
@@ -25,8 +24,6 @@ const NewHotel = () => {
   const { token } = auth;
 
   const { title, content, image, location, price, from, to, bed } = values;
-
-  const { Option } = Select;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -61,103 +58,6 @@ const NewHotel = () => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  const showForm = () => (
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label className="btn btn-outline-secondary btn-block m-2 text-left">
-          Image
-          <input
-            type="file"
-            name="image"
-            onChange={handleImageChange}
-            accept="image/*"
-            hidden
-          />
-        </label>
-        <input
-          type="text"
-          onChange={handleChange}
-          name="title"
-          value={title}
-          className="form-control mb-2"
-          placeholder="Title"
-        />
-        <textarea
-          type="text"
-          onChange={handleChange}
-          name="content"
-          value={content}
-          className="form-control mb-2"
-          placeholder="Content"
-        />
-        <input
-          type="text"
-          onChange={handleChange}
-          name="location"
-          value={location}
-          className="form-control mb-2"
-          placeholder="Location"
-        />
-        <input
-          type="number"
-          onChange={handleChange}
-          name="price"
-          value={price}
-          className="form-control mb-2"
-          placeholder="Price"
-        />
-        {/* <input
-          type="number"
-          onChange={handleChange}
-          name="bed"
-          value={bed}
-          className="form-control mb-2"
-          placeholder="Number of Bed"
-        /> */}
-        <Select
-          onChange={(value) => setValues({ ...values, bed: value })}
-          className="w-100 mb-2"
-          size="large"
-          placeholder="Number of beds"
-        >
-          <Option key={1} value={1}>
-            1
-          </Option>
-          <Option key={2} value={2}>
-            2
-          </Option>
-          <Option key={3} value={3}>
-            3
-          </Option>
-          <Option key={4} value={4}>
-            4
-          </Option>
-        </Select>
-      </div>
-      <DatePicker
-        placeholder="From Date"
-        className="form-control mb-2"
-        onChange={(date, dateString) =>
-          setValues({ ...values, from: dateString })
-        }
-        disabledDate={(current) =>
-          current && current.valueOf() < moment().subtract(1, "days")
-        }
-      />
-      <DatePicker
-        placeholder="To Date"
-        className="form-control mb-2"
-        onChange={(date, dateString) =>
-          setValues({ ...values, to: dateString })
-        }
-        disabledDate={(current) =>
-          current && current.valueOf() < moment().subtract(1, "days")
-        }
-      />
-      <button className="btn btn-outline-primary m-2">Save</button>
-    </form>
-  );
-
   return (
     <>
       <div className="container-fluid bg-secondary p-5 text-center ">
@@ -167,7 +67,13 @@ const NewHotel = () => {
         <div className="row">
           <div className="col-md-10">
             <br />
-            {showForm()}
+            <HotelCreateForm
+              values={values}
+              handleChange={handleChange}
+              handleImageChange={handleImageChange}
+              handleSubmit={handleSubmit}
+              setValues={setValues}
+            />
           </div>
           <div className="col-md-2">
             <img

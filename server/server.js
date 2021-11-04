@@ -3,7 +3,6 @@ import express from "express";
 import { readdirSync } from "fs";
 import cors from "cors";
 import mongoose from "mongoose";
-import formidable from "express-formidable";
 
 const morgan = require("morgan");
 
@@ -15,7 +14,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
-app.use(formidable());
 
 //Database Connection
 
