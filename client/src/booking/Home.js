@@ -21,6 +21,7 @@ const Home = () => {
       <div className="container-fluid h1 p-5 bg-secondary text-center">
         Home Page
       </div>
+      <br />
       <div className="container-fluid">
         {hotels.map((h) => (
           <SmallCard key={h._id} h={h} />
