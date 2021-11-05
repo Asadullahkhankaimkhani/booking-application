@@ -6,3 +6,5 @@ export const createHotel = async (token, data) =>
       Authorization: `Bearer ${token}`,
     },
   });
+
+export const allHotels = async () => await axios.get("/hotels");
