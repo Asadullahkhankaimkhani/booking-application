@@ -7,6 +7,8 @@ export const create = async (req, res) => {
     let files = req.files;
 
     let hotel = new Hotel(fields);
+    hotel.postedBy = req.user._id;
+
     if (files.image) {
       hotel.image.data = fs.readFileSync(files.image.path);
       hotel.image.contentType = files.image.type;

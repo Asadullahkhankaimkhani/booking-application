@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DashboardNav from "../components/DashboardNav";
 import ConnectNav from "../components/ConnectNav";
 import { Link } from "react-router-dom";
@@ -6,11 +6,22 @@ import { useSelector } from "react-redux";
 import { HomeOutlined, LoadingOutlined } from "@ant-design/icons";
 import { createConnectAccount } from "../actions/stripe";
 import { toast } from "react-toastify";
+import { sellerHotels } from "../actions/hotel";
 
 const SellerDashboard = () => {
   const { auth } = useSelector((state) => ({ ...state }));
 
   const [loading, setLoading] = useState(false);
+  const [hotels, setHotels] = useState([]);
+
+  useEffect(() => {
+    loadAllSellerHotels();
+  }, []);
+
+  const loadAllSellerHotels = async () => {
+    const { data } = await sellerHotels(auth.token);
+    setHotels(data);
+  };
 
   const handleClick = async () => {
     setLoading(true);
@@ -30,6 +41,7 @@ const SellerDashboard = () => {
       <div className="row">
         <div className="col-md-10">
           <h2>Your Hotels</h2>
+          {JSON.stringify(hotels, null, 4)}
         </div>
         <div className="col-md-2">
           <Link to="/hotels/new">
