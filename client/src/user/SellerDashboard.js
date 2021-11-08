@@ -7,6 +7,7 @@ import { HomeOutlined, LoadingOutlined } from "@ant-design/icons";
 import { createConnectAccount } from "../actions/stripe";
 import { toast } from "react-toastify";
 import { sellerHotels } from "../actions/hotel";
+import SmallCard from "../components/cards/SmallCard";
 
 const SellerDashboard = () => {
   const { auth } = useSelector((state) => ({ ...state }));
@@ -16,6 +17,7 @@ const SellerDashboard = () => {
 
   useEffect(() => {
     loadAllSellerHotels();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadAllSellerHotels = async () => {
@@ -41,7 +43,14 @@ const SellerDashboard = () => {
       <div className="row">
         <div className="col-md-10">
           <h2>Your Hotels</h2>
-          {JSON.stringify(hotels, null, 4)}
+          {hotels.map((h) => (
+            <SmallCard
+              h={h}
+              key={h._id}
+              owner={true}
+              showViewMoreButton={false}
+            />
+          ))}
         </div>
         <div className="col-md-2">
           <Link to="/hotels/new">
