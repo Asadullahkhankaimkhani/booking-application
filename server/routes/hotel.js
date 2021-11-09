@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import formidable from "express-formidable";
 
 const router = express.Router();
@@ -10,6 +10,7 @@ import {
   image,
   sellerHotel,
   remove,
+  read,
 } from "../controllers/hotel";
 
 // Middleware
@@ -20,5 +21,6 @@ router.get("/hotels", hotels);
 router.get("/hotel/image/:hotelId", image);
 router.get("/seller-hotels", requireSignin, sellerHotel);
 router.delete("/delete-hotel/:hotelId", requireSignin, hotelOwner, remove);
+router.get("/hotel/:hotelId", read);
 
 module.exports = router;

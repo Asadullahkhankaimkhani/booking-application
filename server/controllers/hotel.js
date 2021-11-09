@@ -53,6 +53,19 @@ export const sellerHotel = async (req, res) => {
 };
 
 export const remove = async (req, res) => {
-  const removed = await Hotel.findByIdAndDelete(req.params.hotelId).exec();
-  res.json({ ok: true });
+  try {
+    await Hotel.findByIdAndDelete(req.params.hotelId).exec();
+    res.json({ ok: true });
+  } catch (err) {
+    console.log(err);
+    res.send("Server Err ===> ", err);
+  }
+};
+
+export const read = async (req, res) => {
+  const hotel = await Hotel.findById(req.params.hotelId)
+    .select("-image.data")
+    .exec();
+
+  res.json(hotel);
 };
