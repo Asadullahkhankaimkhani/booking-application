@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { HomeOutlined, LoadingOutlined } from "@ant-design/icons";
 import { createConnectAccount } from "../actions/stripe";
 import { toast } from "react-toastify";
-import { sellerHotels } from "../actions/hotel";
+import { sellerHotels, deleteHotel } from "../actions/hotel";
 import SmallCard from "../components/cards/SmallCard";
 
 const SellerDashboard = () => {
@@ -38,6 +38,18 @@ const SellerDashboard = () => {
     }
   };
 
+  const handleHotelDelete = async (hotelId) => {
+    try {
+      if (!window.confirm("Are You Sure?")) return;
+      await deleteHotel(auth.token, hotelId);
+      toast.success("Hotel Deleted");
+      loadAllSellerHotels();
+    } catch (err) {
+      console.log(err);
+      toast.error("Server Side ERR");
+    }
+  };
+
   const connected = () => (
     <div className="container-fluid">
       <div className="row">
@@ -49,6 +61,7 @@ const SellerDashboard = () => {
               key={h._id}
               owner={true}
               showViewMoreButton={false}
+              handleHotelDelete={handleHotelDelete}
             />
           ))}
         </div>
