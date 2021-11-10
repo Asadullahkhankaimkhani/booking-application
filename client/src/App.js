@@ -12,6 +12,7 @@ import Dashboard from "./user/Dashboard";
 import SellerDashboard from "./user/SellerDashboard";
 import NewHotel from "./hotels/NewHotel";
 import StripeCallback from "./stripe/StripeCallback";
+import EditHotel from "./hotels/EditHotel";
 
 // Components
 import TopNav from "./components/TopNav";
@@ -38,6 +39,11 @@ function App() {
             exact
             path="/stripe/callback"
             component={StripeCallback}
+          />
+          <PrivateRoute
+            exact
+            path="/hotel/edit/:hotelId"
+            component={EditHotel}
           />
         </Switch>
       </BrowserRouter>

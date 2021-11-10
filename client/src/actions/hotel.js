@@ -30,3 +30,5 @@ export const deleteHotel = async (token, hotelId) =>
       Authorization: `Bearer ${token}`,
     },
   });
+
+export const read = async (hotelId) => await axios.get(`/hotel/${hotelId}`);
