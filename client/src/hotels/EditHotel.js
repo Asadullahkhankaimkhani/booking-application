@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { read } from "../actions/hotel";
-import { useSelector } from "react-redux";
+//import { useSelector } from "react-redux";
 //import { toast } from "react-toastify";
+import HotelEditForm from "../components/Forms/HotelEditForm";
 
 const EditHotel = ({ match }) => {
   const [values, setValues] = useState({
@@ -19,11 +20,7 @@ const EditHotel = ({ match }) => {
     "https://via.placeholder.com/100x100.png?text=PREVIEW"
   );
 
-  const { auth } = useSelector((state) => ({ ...state }));
-
-  const { token } = auth;
-
-  const { title, content, image, location, price, from, to, bed } = values;
+  //const { auth } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
     loadSellerHotel();
@@ -55,7 +52,15 @@ const EditHotel = ({ match }) => {
       </div>
       <div className="container-fluid">
         <div className="row">
-          <div className="col-md-10">Show Form</div>
+          <div className="col-md-10">
+            <HotelEditForm
+              handleChange={handleChange}
+              handleImageChange={handleImageChange}
+              handleSubmit={handleSubmit}
+              values={values}
+              setValues={setValues}
+            />
+          </div>
           <div className="col-md-2">
             <img src={preview} alt="IMG" className="img img-fluid m-2" />
             <pre>{JSON.stringify(values, null, 4)}</pre>
