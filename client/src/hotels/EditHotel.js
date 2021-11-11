@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { read } from "../actions/hotel";
-//import { useSelector } from "react-redux";
-//import { toast } from "react-toastify";
+import { read, updateHotel } from "../actions/hotel";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import HotelEditForm from "../components/Forms/HotelEditForm";
 
 const EditHotel = ({ match }) => {
@@ -19,8 +19,9 @@ const EditHotel = ({ match }) => {
   const [preview, setPreview] = useState(
     "https://via.placeholder.com/100x100.png?text=PREVIEW"
   );
-
-  //const { auth } = useSelector((state) => ({ ...state }));
+  const { title, content, image, location, price, from, to, bed } = values;
+  const { auth } = useSelector((state) => ({ ...state }));
+  const { token } = auth;
 
   useEffect(() => {
     loadSellerHotel();
@@ -33,7 +34,30 @@ const EditHotel = ({ match }) => {
   };
 
   const handleSubmit = async (e) => {
-    //
+    e.preventDefault();
+
+    // Sending Form Data
+    let hotelData = new FormData();
+    hotelData.append("title", title);
+    hotelData.append("content", content);
+    hotelData.append("location", location);
+    hotelData.append("price", price);
+    image && hotelData.append("image", image);
+    hotelData.append("from", from);
+    hotelData.append("to", to);
+    hotelData.append("bed", bed);
+
+    try {
+      const { data } = await updateHotel(
+        token,
+        hotelData,
+        match.params.hotelId
+      );
+      toast(`${data.title} is updated `);
+    } catch (err) {
+      console.log(err, "ERR of Server");
+      toast.error(err.response.data.err);
+    }
   };
 
   const handleImageChange = (e) => {
