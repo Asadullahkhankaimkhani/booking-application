@@ -11,6 +11,7 @@ import {
   sellerHotel,
   remove,
   read,
+  update,
 } from "../controllers/hotel";
 
 // Middleware
@@ -22,5 +23,12 @@ router.get("/hotel/image/:hotelId", image);
 router.get("/seller-hotels", requireSignin, sellerHotel);
 router.delete("/delete-hotel/:hotelId", requireSignin, hotelOwner, remove);
 router.get("/hotel/:hotelId", read);
+router.put(
+  "/update-hotel/:hotelId",
+  requireSignin,
+  hotelOwner,
+  formidable(),
+  update
+);
 
 module.exports = router;

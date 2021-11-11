@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import HotelEditForm from "../components/Forms/HotelEditForm";
 
-const EditHotel = ({ match }) => {
+const EditHotel = ({ match, history }) => {
   const [values, setValues] = useState({
     title: "",
     content: "",
@@ -56,7 +56,6 @@ const EditHotel = ({ match }) => {
       toast(`${data.title} is updated `);
     } catch (err) {
       console.log(err, "ERR of Server");
-      toast.error(err.response.data.err);
     }
   };
 
