@@ -105,7 +105,7 @@ const HotelEditForm = ({
           }
         />
       )}
-      <button className="btn btn-outline-primary m-2">Save</button>
+      <button className="btn btn-outline-primary m-2">Update</button>
     </form>
   );
 };

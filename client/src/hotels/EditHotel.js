@@ -10,16 +10,16 @@ const EditHotel = ({ match, history }) => {
     title: "",
     content: "",
     location: "",
-    image: "",
     price: "",
     from: "",
     to: "",
     bed: "",
   });
+  const [image, setImage] = useState("");
   const [preview, setPreview] = useState(
     "https://via.placeholder.com/100x100.png?text=PREVIEW"
   );
-  const { title, content, image, location, price, from, to, bed } = values;
+  const { title, content, location, price, from, to, bed } = values;
   const { auth } = useSelector((state) => ({ ...state }));
   const { token } = auth;
 
@@ -54,6 +54,7 @@ const EditHotel = ({ match, history }) => {
         match.params.hotelId
       );
       toast(`${data.title} is updated `);
+      history.push("/dashboard/seller");
     } catch (err) {
       console.log(err, "ERR of Server");
     }
@@ -61,7 +62,7 @@ const EditHotel = ({ match, history }) => {
 
   const handleImageChange = (e) => {
     setPreview(URL.createObjectURL(e.target.files[0]));
-    setValues({ ...values, image: e.target.files[0] });
+    setImage(e.target.files[0]);
   };
 
   const handleChange = (e) => {

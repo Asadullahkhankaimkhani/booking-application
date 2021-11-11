@@ -82,13 +82,12 @@ export const update = async (req, res) => {
       image.data = fs.readFileSync(files.image.path);
       image.contentType = files.image.type;
       data.image = image;
-
-      let updated = await Hotel.findOneAndUpdate(req.params.hotelId, data, {
-        new: true,
-      }).select("-image.data");
-
-      res.json(updated);
     }
+    let updated = await Hotel.findOneAndUpdate(req.params.hotelId, data, {
+      new: true,
+    }).select("-image.data");
+
+    res.json(updated);
   } catch (err) {
     console.log(err);
     res.status(401).send("Update Hotel is Failed Please Try Again");
