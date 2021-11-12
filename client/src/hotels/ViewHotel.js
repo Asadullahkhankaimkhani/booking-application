@@ -11,13 +11,14 @@ const ViewHotel = ({ match }) => {
 
   const loadHotel = async () => {
     const { data } = await read(match.params.hotelId);
-    console.log(data);
+    setHotel(data);
+    setImage(`${process.env.REACT_APP_API}/hotel/image/${data._id}`);
   };
 
   return (
     <>
       <div className="container-fluid p-5 bg-secondary text-center ">
-        <h1 className="white">Dummy Text</h1>
+        <h1 className="white">{hotel.title}</h1>
       </div>
     </>
   );
