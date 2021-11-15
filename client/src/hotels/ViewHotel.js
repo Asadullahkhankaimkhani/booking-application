@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { diffDays, read } from "../actions/hotel";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
-const ViewHotel = ({ match }) => {
+
+const ViewHotel = ({ match, history }) => {
   const [hotel, setHotel] = useState([]);
   const [image, setImage] = useState("");
+
+  const { auth } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
     loadHotel();
@@ -17,6 +21,12 @@ const ViewHotel = ({ match }) => {
     setImage(`${process.env.REACT_APP_API}/hotel/image/${data._id}`);
   };
 
+  const handleSubmit = async (e) => {
+    if (!auth || !auth.token) {
+      history.push("/login");
+    }
+  };
+
   return (
     <>
       <div className="container-fluid p-5 bg-secondary text-center ">
@@ -25,6 +35,7 @@ const ViewHotel = ({ match }) => {
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-6">
+            <br />
             <img src={image} alt={hotel.title} className="img img-fluid m-2" />
           </div>
           <div className="col-md-6">
@@ -48,8 +59,11 @@ const ViewHotel = ({ match }) => {
             </p>
             <i>Posted by {hotel.postedBy && hotel.postedBy.name}</i>
             <br />
-            <button className="btn btn-block btn-lg btn-primary mt-3">
-              Book Now
+            <button
+              onClick={handleSubmit}
+              className="btn btn-block btn-lg btn-primary mt-3"
+            >
+              {auth && auth.token ? "Book Now" : "Login to Book"}
             </button>
           </div>
         </div>
