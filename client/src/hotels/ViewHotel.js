@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { read } from "../actions/hotel";
+import { diffDays, read } from "../actions/hotel";
+import moment from "moment";
 
 const ViewHotel = ({ match }) => {
   const [hotel, setHotel] = useState([]);
@@ -7,6 +8,7 @@ const ViewHotel = ({ match }) => {
 
   useEffect(() => {
     loadHotel();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadHotel = async () => {
@@ -19,6 +21,38 @@ const ViewHotel = ({ match }) => {
     <>
       <div className="container-fluid p-5 bg-secondary text-center ">
         <h1 className="white">{hotel.title}</h1>
+      </div>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-md-6">
+            <img src={image} alt={hotel.title} className="img img-fluid m-2" />
+          </div>
+          <div className="col-md-6">
+            <br />
+            <b>{hotel.content}</b>
+            <p className="alert alert-info mt-3">{hotel.price}</p>
+            <p className="cart-text">
+              <span className="float-right text-primary">
+                for {diffDays(hotel.from, hotel.to)}
+                {"  "}
+                {diffDays(hotel.from, hotel.to) <= 1 ? "Day" : "Days"}
+              </span>
+            </p>
+            <p>
+              From <br />{" "}
+              {moment(new Date(hotel.from)).format("MMMM Do YYYY, h:mm:ss a")}
+            </p>
+            <p>
+              to <br />{" "}
+              {moment(new Date(hotel.to)).format("MMMM Do YYYY, h:mm:ss a")}
+            </p>
+            <i>Posted by {hotel.postedBy && hotel.postedBy.name}</i>
+            <br />
+            <button className="btn btn-block btn-lg btn-primary mt-3">
+              Book Now
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );
