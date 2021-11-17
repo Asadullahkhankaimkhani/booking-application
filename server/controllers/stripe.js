@@ -1,4 +1,5 @@
 import User from "../model/User";
+import Hotel from "../model/hotel";
 import Stripe from "stripe";
 import queryString from "query-string";
 
@@ -26,7 +27,7 @@ export const createConnectAccount = async (req, res) => {
     type: "account_onboarding",
   });
 
-  // prefill any info such as email
+  // pre fill any info such as email
 
   accountLink = Object.assign(accountLink, {
     "stripe_user[email]": user.email || undefined,
@@ -52,11 +53,6 @@ export const getAccountStatus = async (req, res) => {
   const user = await User.findById(req.user._id).exec();
   const account = await stripe.accounts.retrieve(user.stripe_account_id);
   const updatedAccount = await updateDelayDays(account.id);
-
-  // if (updatedAccount.charges_enabled === false || payouts_enabled === false) {
-  //   updatedAccount.charges_enabled = true;
-  //   payouts_enabled = true;
-  // }
 
   const updatedUser = await User.findByIdAndUpdate(
     user._id,
@@ -101,25 +97,42 @@ export const payoutSetting = async (req, res) => {
 
 export const stripeSessionId = async (req, res) => {
   //console.log(req.body.hotelId);
+  // 1. get hotel id from req.body
+  const { hotelId } = req.body;
+  // 2. find the hotel based on hotel id from db
+  const item = await Hotel.findById(hotelId).populate("postedBy").exec();
+  // 3. 20% charges as application fee
+  const fee = (item.price * 20) / 100;
+
+  // 4. create session
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
+    // 5. purchasing item details, it will be shown to user on checkout
     line_items: [
       {
-        name: "Hotel booking",
-        amount: 1000,
+        name: item.title,
+        amount: item.price * 100,
         currency: "usd",
         quantity: 1,
       },
     ],
+    // 6 . create payment intent with application fee and destination charges 80%
     payment_intent_data: {
-      application_fee_amount: 123,
+      application_fee_amount: fee * 100,
+      // this seller can see his balance in out frontend dashboard
       transfer_data: {
-        destination: "acct_1Jt5jqPX8QgHT7nG",
+        destination: item.postedBy.stripe_account_id,
       },
     },
+
     success_url: process.env.STRIPE_SUCCESS_URL,
     cancel_url: process.env.STRIPE_CANCEL_URL,
   });
+  // 7 . add this session object to user in the db
+  await User.findOneAndUpdate(req.user._id, { stripeSession: session }).exec();
 
-  console.log("SESSION ===>", session);
+  // 8 . send session id as response to frontend
+  res.send({
+    sessionId: session.id,
+  });
 };
