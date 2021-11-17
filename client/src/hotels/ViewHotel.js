@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { diffDays, read } from "../actions/hotel";
+import { getSessionId } from "../actions/stripe";
 import moment from "moment";
 import { useSelector } from "react-redux";
-
 
 const ViewHotel = ({ match, history }) => {
   const [hotel, setHotel] = useState([]);
@@ -22,9 +22,12 @@ const ViewHotel = ({ match, history }) => {
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     if (!auth || !auth.token) {
       history.push("/login");
     }
+    let { data } = await getSessionId(auth.token, match.params.hotelId);
+    console.log("Session Id", data);
   };
 
   return (

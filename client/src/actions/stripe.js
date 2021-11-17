@@ -50,3 +50,14 @@ export const payoutSetting = async (token) =>
       },
     }
   );
+
+export const getSessionId = async (token, hotelId) =>
+  await axios.post(
+    "/stripe-session-id",
+    { hotelId },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
