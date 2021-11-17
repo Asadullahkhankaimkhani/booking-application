@@ -3,10 +3,12 @@ import { diffDays, read } from "../actions/hotel";
 import { getSessionId } from "../actions/stripe";
 import moment from "moment";
 import { useSelector } from "react-redux";
+import { loadStripe } from "@stripe/stripe-js";
 
 const ViewHotel = ({ match, history }) => {
   const [hotel, setHotel] = useState([]);
   const [image, setImage] = useState("");
+  const [loading, setloading] = useState(false);
 
   const { auth } = useSelector((state) => ({ ...state }));
 
@@ -23,11 +25,17 @@ const ViewHotel = ({ match, history }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setloading(true);
     if (!auth || !auth.token) {
       history.push("/login");
     }
     let { data } = await getSessionId(auth.token, match.params.hotelId);
-    console.log("Session Id", data);
+    const stripe = await loadStripe(process.env.REACT_APP_STRIPE_KEY);
+
+    const result = await stripe.redirectToCheckout({
+      sessionId: data.sessionId,
+    });
+    console.log(result);
   };
 
   return (
@@ -65,8 +73,13 @@ const ViewHotel = ({ match, history }) => {
             <button
               onClick={handleSubmit}
               className="btn btn-block btn-lg btn-primary mt-3"
+              disabled={loading}
             >
-              {auth && auth.token ? "Book Now" : "Login to Book"}
+              {loading
+                ? "Loading..."
+                : auth && auth.token
+                ? "Book Now"
+                : "Login to Book"}
             </button>
           </div>
         </div>
