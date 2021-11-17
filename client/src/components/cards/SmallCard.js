@@ -36,7 +36,7 @@ const SmallCard = ({
               {h.title}{" "}
               <span className="text-primary">
                 {currencyFromtter({
-                  amount: h.price,
+                  amount: h.price * 100,
                   currency: "usd",
                 })}
               </span>
