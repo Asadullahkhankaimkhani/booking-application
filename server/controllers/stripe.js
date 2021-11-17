@@ -98,3 +98,7 @@ export const payoutSetting = async (req, res) => {
     console.log("Payout Err", err);
   }
 };
+
+export const stripeSessionId = async (req, res) => {
+  console.log(req.body.hotelId);
+};
