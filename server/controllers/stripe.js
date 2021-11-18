@@ -130,7 +130,7 @@ export const stripeSessionId = async (req, res) => {
     cancel_url: process.env.STRIPE_CANCEL_URL,
   });
   // 7 . add this session object to user in the db
-  await User.findOneAndUpdate(req.user._id, { stripeSession: session }).exec();
+  await User.findByIdAndUpdate(req.user._id, { stripeSession: session }).exec();
 
   // 8 . send session id as response to frontend
   res.send({
@@ -139,41 +139,6 @@ export const stripeSessionId = async (req, res) => {
 };
 
 export const stripeSuccess = async (req, res) => {
-  // try {
-  //   //1. get hotel id from req.body
-  //   const { hotelId } = req.body;
-  //   //2. find currently logged in user
-  //   const user = await User.findById(req.user._id).exec();
-  //   //3.retrieve stripe session , based on session id we previously save in user db
-
-  //   console.log(user.stripeSession.id);
-  //   // const session = await stripe.checkout.sessions.retrieve(
-  //   //   user.stripeSession.id
-  //   // );
-  //   // //4. if session payment status is paid , create order
-  //   // if (session.payment_status === "paid") {
-  //   //   //5. check if order with that session is already exist by querying order collection
-  //   //   const orderExist = await Order.findOne({
-  //   //     "session.id": session.id,
-  //   //   }).exec();
-  //   //   if (orderExist) {
-  //   //     //6. if order exist, send success true
-  //   //     res.json({ success: true });
-  //   //   } else {
-  //   //     //7. else create new order and send success true
-  //   //     let newOrder = await new Order({
-  //   //       hotel: hotelId,
-  //   //       session,
-  //   //       orderedBy: user._id,
-  //   //     }).save();
-  //   //     // 8. remove user's stipeSession
-  //   //     await User.findByIdAndUpdate(user._id, { $set: { stripeSession: {} } });
-  //   //     res.json({ success: true });
-  //   //   }
-  //   // }
-  // } catch (err) {
-  //   console.log(err);
-  // }
   try {
     // 1 get hotel id from req.body
     const { hotelId } = req.body;
