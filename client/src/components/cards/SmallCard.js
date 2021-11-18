@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React from "react";
 import { currencyFromtter } from "../../actions/stripe";
 import { diffDays } from "../../actions/hotel";
@@ -25,7 +26,7 @@ const SmallCard = ({
           ) : (
             <img
               src={"http://via.placeholder.com/900x500.png?text=Booking"}
-              alt="defaultimage"
+              alt="default image"
               className="card-image img img-fluid"
             />
           )}
