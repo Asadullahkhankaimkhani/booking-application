@@ -61,3 +61,10 @@ export const getSessionId = async (token, hotelId) =>
       },
     }
   );
+
+export const stripeSuccessRequest = async (token, hotelId) =>
+  await axios.post(
+    "/stripe-success",
+    { hotelId },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
