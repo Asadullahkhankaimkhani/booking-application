@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { stripeSuccessRequest } from "../actions/stripe";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const StripeSuccess = ({ match, history }) => {
   const {
@@ -20,10 +21,8 @@ const StripeSuccess = ({ match, history }) => {
 
   return (
     <div className="container">
-      <div className="col">
-        <h1 className="text-center p-5">
-          Payment Successfully{match.params.hotelId}
-        </h1>
+      <div className="d-flex justify-content-center p-5">
+        <LoadingOutlined className="display-1 text-danger " />
       </div>
     </div>
   );
