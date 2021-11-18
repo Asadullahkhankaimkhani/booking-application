@@ -136,3 +136,7 @@ export const stripeSessionId = async (req, res) => {
     sessionId: session.id,
   });
 };
+
+export const stripeSuccess = async (req, res) => {
+  //
+};
