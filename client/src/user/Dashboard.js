@@ -3,6 +3,7 @@ import DashboardNav from "../components/DashboardNav";
 import ConnectNav from "../components/ConnectNav";
 import { userHotelBookings } from "../actions/hotel";
 import { useSelector } from "react-redux";
+import BookingCard from "../components/cards/BookingCard";
 
 const Dashboard = () => {
   const [bookings, setBookings] = useState([]);
@@ -25,12 +26,20 @@ const Dashboard = () => {
         <div className="row">
           <div className="col-md-10">
             <h2>Your Bookings</h2>
-            {JSON.stringify(bookings, null, 4)}
-            <pre></pre>
           </div>
           <div className="col-md-2">
             <button className="btn btn-primary">Browers Hotels</button>
           </div>
+        </div>
+        <div className="row">
+          {bookings.map((b) => (
+            <BookingCard
+              key={b._id}
+              hotel={b.hotel}
+              session={b.session}
+              orderedBy={b.orderedBy}
+            />
+          ))}
         </div>
       </div>
     </>
