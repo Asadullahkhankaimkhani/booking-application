@@ -1,9 +1,14 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React from "react";
+import React, { useState } from "react";
 import { currencyFromtter } from "../../actions/stripe";
 import { diffDays } from "../../actions/hotel";
+import { useHistory } from "react-router";
 
 const BookingCard = ({ hotel, key, session, orderedBy }) => {
+  const [showModel, setShowModel] = useState(false);
+
+  const history = useHistory();
+
   return (
     <div className="card mb-3">
       <div className="row no-gutters">
@@ -46,6 +51,9 @@ const BookingCard = ({ hotel, key, session, orderedBy }) => {
             <p className="card-text">
               Available from {new Date(hotel.from).toLocaleDateString()}
             </p>
+          </div>
+          <div className="d-flex justify-content-between h4">
+            <button className="btn btn-primary">Show more</button>
           </div>
         </div>
       </div>
