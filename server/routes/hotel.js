@@ -12,6 +12,7 @@ import {
   remove,
   read,
   update,
+  userHotelBookings,
 } from "../controllers/hotel";
 
 // Middleware
@@ -30,5 +31,8 @@ router.put(
   formidable(),
   update
 );
+
+// orders
+router.get("/user-hotel-bookings", requireSignin, userHotelBookings);
 
 module.exports = router;

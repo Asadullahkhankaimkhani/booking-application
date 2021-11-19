@@ -1,4 +1,5 @@
 import Hotel from "../model/hotel";
+import Order from "../model/order";
 import fs from "fs";
 
 export const create = async (req, res) => {
@@ -93,4 +94,13 @@ export const update = async (req, res) => {
     console.log(err);
     res.status(401).send("Update Hotel is Failed Please Try Again");
   }
+};
+
+export const userHotelBookings = async (req, res) => {
+  const all = await Order.find({ orderedBy: req.user._id })
+    .select("session")
+    .populate("hotel", "-image.data")
+    .populate("orderedBy", "_id name")
+    .exec();
+  res.json(all);
 };
