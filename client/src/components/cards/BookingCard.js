@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { currencyFromtter } from "../../actions/stripe";
 import { diffDays } from "../../actions/hotel";
 import { useHistory } from "react-router";
+import OrderModal from "../modals/OrderModal";
 
 const BookingCard = ({ hotel, key, session, orderedBy }) => {
   const [showModel, setShowModel] = useState(false);
@@ -51,9 +52,22 @@ const BookingCard = ({ hotel, key, session, orderedBy }) => {
             <p className="card-text">
               Available from {new Date(hotel.from).toLocaleDateString()}
             </p>
+            {showModel && (
+              <OrderModal
+                session={session}
+                orderedBy={orderedBy}
+                showModel={showModel}
+                setShowModel={setShowModel}
+              />
+            )}
           </div>
           <div className="d-flex justify-content-between h4">
-            <button className="btn btn-primary">Show more</button>
+            <button
+              onClick={() => setShowModel(!showModel)}
+              className="btn btn-primary"
+            >
+              Show Payment Information
+            </button>
           </div>
         </div>
       </div>
