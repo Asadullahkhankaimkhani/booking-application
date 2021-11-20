@@ -26,7 +26,8 @@ export const create = async (req, res) => {
 };
 
 export const hotels = async (req, res) => {
-  const all = await Hotel.find({})
+  // const all = await Hotel.find({ from: { $gte: new Date() } })
+  const all = await Hotel.find()
     .limit(24)
     .select("-image.data")
     .populate("postedBy", "_id name")
