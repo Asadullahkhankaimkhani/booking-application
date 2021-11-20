@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { diffDays, read } from "../actions/hotel";
+import { diffDays, read, isAlreadyBooked } from "../actions/hotel";
 import { getSessionId } from "../actions/stripe";
 import moment from "moment";
 import { useSelector } from "react-redux";
@@ -9,11 +9,19 @@ const ViewHotel = ({ match, history }) => {
   const [hotel, setHotel] = useState([]);
   const [image, setImage] = useState("");
   const [loading, setloading] = useState(false);
+  const [alreadyBooked, setAlreadyBooked] = useState(false);
 
   const { auth } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
     loadHotel();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    isAlreadyBooked(auth.token, match.params.hotelId)
+      .then((data) => setAlreadyBooked(data))
+      .catch((err) => console.log(err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -24,18 +32,23 @@ const ViewHotel = ({ match, history }) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setloading(true);
-    if (!auth || !auth.token) {
-      history.push("/login");
-    }
-    let { data } = await getSessionId(auth.token, match.params.hotelId);
-    const stripe = await loadStripe(process.env.REACT_APP_STRIPE_KEY);
+    try {
+      e.preventDefault();
 
-    const result = await stripe.redirectToCheckout({
-      sessionId: data.sessionId,
-    });
-    console.log(result);
+      if (!auth || !auth.token) {
+        history.push("/login");
+      }
+      setloading(true);
+      let { data } = await getSessionId(auth.token, match.params.hotelId);
+      const stripe = await loadStripe(process.env.REACT_APP_STRIPE_KEY);
+
+      const result = await stripe.redirectToCheckout({
+        sessionId: data.sessionId,
+      });
+      console.log(result);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -70,17 +83,23 @@ const ViewHotel = ({ match, history }) => {
             </p>
             <i>Posted by {hotel.postedBy && hotel.postedBy.name}</i>
             <br />
-            <button
-              onClick={handleSubmit}
-              className="btn btn-block btn-lg btn-primary mt-3"
-              disabled={loading}
-            >
-              {loading
-                ? "Loading..."
-                : auth && auth.token
-                ? "Book Now"
-                : "Login to Book"}
-            </button>
+            {alreadyBooked ? (
+              <button className="btn btn-primary" disabled={true}>
+                Hotel is Already Booked By You Sir
+              </button>
+            ) : (
+              <button
+                onClick={handleSubmit}
+                className="btn btn-block btn-lg btn-primary mt-3"
+                disabled={loading}
+              >
+                {loading
+                  ? "Loading..."
+                  : auth && auth.token
+                  ? "Book Now"
+                  : "Login to Book"}
+              </button>
+            )}
           </div>
         </div>
       </div>

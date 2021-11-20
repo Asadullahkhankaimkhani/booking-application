@@ -46,3 +46,10 @@ export const userHotelBookings = async (token) =>
       Authorization: `Bearer ${token}`,
     },
   });
+
+export const isAlreadyBooked = async (token, hotelId) =>
+  await axios.get(`/is-already-booked/${hotelId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });

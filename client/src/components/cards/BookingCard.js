@@ -2,13 +2,11 @@
 import React, { useState } from "react";
 import { currencyFromtter } from "../../actions/stripe";
 import { diffDays } from "../../actions/hotel";
-import { useHistory } from "react-router";
+
 import OrderModal from "../modals/OrderModal";
 
-const BookingCard = ({ hotel, key, session, orderedBy }) => {
+const BookingCard = ({ hotel, session, orderedBy }) => {
   const [showModel, setShowModel] = useState(false);
-
-  const history = useHistory();
 
   return (
     <div className="card mb-3">

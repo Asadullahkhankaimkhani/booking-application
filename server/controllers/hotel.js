@@ -104,3 +104,21 @@ export const userHotelBookings = async (req, res) => {
     .exec();
   res.json(all);
 };
+
+export const isAlreadyBooked = async (req, res) => {
+  const { hotelId } = req.params;
+  // find orders of the currently logged in user
+  const userOrder = await Order.find({ orderedBy: req.user._id })
+    .select("hotel")
+    .exec();
+
+  // check if hotel id is found in userOrder array
+
+  let ids = [];
+
+  for (let i = 0; i < userOrder.length; i++) {
+    ids.push(userOrder[i].hotel.toString());
+  }
+
+  res.json({ ok: ids.includes(hotelId) });
+};
